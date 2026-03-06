@@ -175,7 +175,7 @@
       window.open(url, '_blank');
     }
 
-    fetch('./tutorials.json')
+    fetch('./interactive.json')
       .then(r => r.json())
       .then(tutorials => {
         const list = document.getElementById('list');
