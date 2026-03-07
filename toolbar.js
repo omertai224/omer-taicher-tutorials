@@ -81,7 +81,7 @@
     const barH = bar.getBoundingClientRect().height || 72;
     const gap = 8;
     bar.style.top = (navH + gap) + 'px';
-    document.body.style.paddingTop = (navH + barH + gap + 20) + 'px';
+    document.body.style.paddingTop = (navH + barH + gap + 8) + 'px';
   }
 
   window.addEventListener('load', positionBar);
