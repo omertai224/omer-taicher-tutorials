@@ -4,7 +4,6 @@
   style.textContent = `
     .a11y-bar {
       position: fixed;
-      top: 68px;
       left: 50%;
       transform: translateX(-50%);
       width: max-content;
@@ -58,7 +57,6 @@
       background: rgba(255,255,255,0.05);
     }
     @media (min-width: 960px) { .a11y-bar { display: none; } }
-    @media (max-width: 959px) { body { padding-top: 170px; } }
   `;
   document.head.appendChild(style);
 
@@ -74,6 +72,21 @@
     <button class="a11y-btn" id="a11y-up" aria-label="הגדל טקסט">א+</button>
   `;
   document.body.appendChild(bar);
+
+  // ===== מיקום דינמי לפי גובה הנאב =====
+  function positionBar() {
+    if (window.innerWidth >= 960) return;
+    const nav = document.querySelector('nav');
+    const navH = nav ? nav.getBoundingClientRect().height : 60;
+    const barH = bar.getBoundingClientRect().height || 72;
+    const gap = 8;
+    bar.style.top = (navH + gap) + 'px';
+    document.body.style.paddingTop = (navH + barH + gap + 20) + 'px';
+  }
+
+  window.addEventListener('load', positionBar);
+  window.addEventListener('resize', positionBar);
+  setTimeout(positionBar, 100);
 
   // ===== LOGIC =====
   const SCALE_KEY = 'a11y_scale';
@@ -95,13 +108,13 @@
   const mobileMenu = document.getElementById('mobile-menu');
   if (mobileMenu) {
     const observer = new MutationObserver(() => {
+      const nav = document.querySelector('nav');
+      const navH = nav ? nav.getBoundingClientRect().height : 60;
       if (mobileMenu.classList.contains('open')) {
         const menuBottom = mobileMenu.getBoundingClientRect().bottom;
         bar.style.top = menuBottom + 'px';
-        bar.style.bottom = 'auto';
       } else {
-        bar.style.top = '68px';
-        bar.style.bottom = 'auto';
+        bar.style.top = (navH + 8) + 'px';
       }
     });
     observer.observe(mobileMenu, { attributes: true, attributeFilter: ['class'] });
